@@ -1,0 +1,73 @@
+.h-33 {
+    height: 33%;
+}
+
+.h-66 {
+    height: 66%;
+}
+
+.h-40 {
+    height: 40%;
+}
+
+.h-60 {
+    height: 60%;
+
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+.object-fit-contain {
+    object-fit: contain;
+}
+
+.scroll-y {
+    height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    gap: 1px;
+    background-image: url("https://wallpapers.com/images/high/grey-wood-background-xkm2d2jo03l2j1ik.webp");
+    width: 75vw;
+    height: 90vh;   
+}
+
+
+#SalleDesServeurs {
+    grid-row: 8/ 13;
+    grid-column: 10/ 13;
+   
+}
+
+#Manager {
+    grid-row: 8/ 13;
+    grid-column: 7/ 10;
+}
+
+#SalleDesEcurite {
+    grid-row: 1 / 6;
+    grid-column: 10 / 13;
+}
+
+#Reception {
+    grid-row: 1 / 6;
+    grid-column: 7/10;
+}
+
+
+#Nettoyage {
+    grid-row: 1/ 6;
+    grid-column: 1 / 6;
+}
+
+#AutresRoles {
+    grid-row: 6 / 13;
+    grid-column: 1 / 6;
+}
