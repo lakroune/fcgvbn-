@@ -3,22 +3,19 @@ document.getElementById('close-modal-add').addEventListener('click', (e) => {
 
     elementClick.closest('div.position-absolute').classList.toggle('d-none')
     document.getElementById('model-add-staff').querySelector('form').reset();
-    document.getElementById('experiences-container').innerHTML = ''
-
 })
 
 document.getElementById("input-photo-preview").addEventListener('keyup', function () {
     document.getElementById('photo-preview').src = document.getElementById("input-photo-preview").value
 })
-
+let countExp = 2
 document.getElementById("add-exp").addEventListener('click', function () {
-    let countExp = 2
     let experienceform = document.createElement('div')
     experienceform.className = 'experience p-1'
     experienceform.innerHTML = `
                              <div class="d-flex justify-content-between p-1">
                             <span class="badge bg-success p-2">
-                                Experience ${countExp}
+                                Experience ${countExp++}
                             </span>
                             <button type="button" class=" bg-opacity-0 bg-light border-0 text-danger ">
                                 <i class="bi bi-file-earmark-x">
@@ -36,13 +33,12 @@ document.getElementById("add-exp").addEventListener('click', function () {
                             </div>
                             <div class="d-flex justify-content-between gap-1">
                                 <input type="date" placeholder="Années (ex: 2019-2022)"
-                                    class="flex-grow-1 border p-1 rounded  " name="annees" required>
+                                    class="flex-grow-1 border p-1 rounded  " name="date_start" required>
                                 <input type="date" placeholder="Années (ex: 2019-2022)"
-                                    class="flex-grow-1 border rounded" name="annees" required>
+                                    class="flex-grow-1 border rounded" name="date_end" required>
                             </div>
                         </div>
     `
-
     document.getElementById('experiences-container').appendChild(experienceform)
 })
 
@@ -55,24 +51,28 @@ document.getElementById('experiences-container').addEventListener('click', (e) =
 
 
 
-function createExp(poste, entreprise, annee) {
-    let Exp = {
+function createExp(poste, entreprise, dateStart, dateEnd) {
+    return {
         poste: poste,
         entreprise: entreprise,
-        annee: annee
-    }
-    return Exp
+        date_start: dateStart,
+        date_end: dateEnd || "Présent"
+    };
 }
 function createStaff(name, role, phone, email, photourl, experiences) {
-    let Exp = {
+    let IDwerker = Number(localStorage.getItem("id_worker")) || 0
+    worker = {
+        id: IDwerker,
         fullname: name,
         role: role,
         phone: phone,
         email: email,
         photourl: photourl,
+        etat: "NotYet",
         experiences: experiences
     }
-    return Exp
+    localStorage.setItem('id_worker', ++IDwerker)
+    return worker
 }
 
 document.getElementById('btn').addEventListener('click', () => {
@@ -86,7 +86,7 @@ document.getElementById('btn').addEventListener('click', () => {
     let experiencestable = []
     if (experiences) {
         experiences.forEach(element => {
-            experiencestable.push(createExp(element.querySelector('input[name="postes"]').value, element.querySelector('input[name="entreprises"]').value, element.querySelector('input[name="annees"]').value))
+            experiencestable.push(createExp(element.querySelector('input[name="postes"]').value, element.querySelector('input[name="entreprises"]').value, element.querySelector('input[name="date_start"]').value, element.querySelector('input[name="date_end"]').value))
         });
     }
     let newStaff = createStaff(name_input.value, role_input.value, phone_input.value, email_input.value, photo_input.value, experiencestable)
@@ -100,34 +100,105 @@ document.getElementById('btn').addEventListener('click', () => {
 document.getElementById("btn-add-staff").addEventListener('click', () => {
     document.getElementById("model-add-staff").classList.toggle('d-none')
 })
-
+// ::::::::::::::::::::::::::
+// ::::::::::::::::::::::::::
+// :::::::::::::::::::
 show_Unassigned_Staff_list()
-
+// ::::::::::::::::::::::::::::
+// ::::::::::::::::::::::::::::
+// :::::::::::::::
 function show_Unassigned_Staff_list() {
     let staff_table = JSON.parse(localStorage.getItem("staff_table")) || []
-    let index = 0
     staff_table.forEach(staff => {
-        let staff_card = document.createElement("div")
-        staff_card.className = "card m-1 bg-light"
-        staff_card.setAttribute('id', index++)
-        staff_card.innerHTML = ` <div class="card-body d-flex  align-items-center" >
+        if (staff.etat === "NotYet") {
+            let staff_card = document.createElement("div")
+            staff_card.className = "card m-1 bg-light"
+            staff_card.setAttribute('id', staff.id)
+            staff_card.innerHTML = ` <div class="card-body d-flex  align-items-center" >
                                     <img src=" ${staff.photourl} " width="44" class="rounded-circle" alt="Photo">
                                     <div class="    ">
                                         <span class="card-title   fs-12"> ${staff.fullname}</span>
                                         <span class="card-text text-muted   fs-12"> ${staff.role}</span>
                                     </div>
                                  </div> `
-        document.getElementById("Unassigned-Staff-list").appendChild(staff_card)
+            document.getElementById("Unassigned-Staff-list").appendChild(staff_card)
+        }
+    });
+}
+
+function addWorkerToRoom(worker, room) {
+    const roomCard = document.getElementById(room).querySelector(".cards-continer")
+
+    const divWorker = document.createElement("div");
+    divWorker.className = "col-3 d-flex p-1   bg-light rounded   border";
+
+    divWorker.innerHTML = `
+        <img src="${worker.photourl}" 
+             width="33" height="33" class="rounded-circle">
+        <div>
+            <strong class="fs-12" >${worker.fullname}</strong>
+            <small class="text-muted d-block fs-12">${worker.role}</small>
+        </div>
+        <button class="fs-12  " onclick="removeWorkerFromRoom(${worker.id})">
+            ×
+        </button`
+    roomCard.appendChild(divWorker)
+}
+
+function removeWorkerFromRoom(idworker) {
+    let staff_table = JSON.parse(localStorage.getItem("staff_table")) || [];
+    staff_table = staff_table.map(worker => {
+        if (worker.id == Number(idworker)) {
+            return { ...worker, etat: "NotYet" };
+        }
+        return worker;
+    })
+    localStorage.setItem('staff_table', JSON.stringify(staff_table))
+    assign_Staff_to_Carte()
+}
+
+assign_Staff_to_Carte()
+
+function assign_Staff_to_Carte() {
+    const staff_table = JSON.parse(localStorage.getItem("staff_table")) || [];
+    staff_table.forEach(staff => {
+        switch (staff.etat) {
+            case "Conference_room":
+                addWorkerToRoom(staff, "ConferenceRoom");
+                break;
+
+            case "Reception_room":
+                addWorkerToRoom(staff, "Reception");
+                break;
+
+            case "Server_room":
+                addWorkerToRoom(staff, "ServerRoom");
+                break;
+
+            case "Security_room":
+                addWorkerToRoom(staff, "SecurityRoom");
+                break;
+
+            case "Staff_room":
+                addWorkerToRoom(staff, "StaffRoom");
+                break;
+
+            case "Archives_room":
+                addWorkerToRoom(staff, "ArchivesRoom");
+                break;
+        }
+
     });
 
 }
 
 
-document.getElementById('Unassigned-Staff-list').addEventListener('click', (e) => {
 
-    let elementClick = e.target
+document.getElementById('Unassigned-Staff-list').addEventListener('click', (e) => {
+    let card = e.target.closest('div.card');
+    if (!card) return;
     let staff_table = JSON.parse(localStorage.getItem("staff_table")) || []
-    let index = elementClick.closest('div.card').getAttribute('id')
+    let index = card.getAttribute('id')
     let div = document.createElement('div')
     div.className = " p-1  bg-opacity-75 bg-dark vw-100 vh-100 position-absolute top-0  d-flex flex-column justify-content-center align-items-center modelshowstaff"
     div.innerHTML = show_staff(staff_table[index])
@@ -197,68 +268,93 @@ function showExp(experiences) {
 
 
 
-const access_room = {
-    "Conference Room": [
-        
-        "all"
-    ],
-
-    "Reception": [
-        "Manager",
-        "Receptionist",
-        "Cleaning staff",
-        "Other"
-    ],
-
-    "Server Room": [
-        "Manager",
-        "IT Technician",
-        "Cleaning staff"
-    ],
-
-    "Security Room": [
-        "Manager",
-        "Security Officer",
-        "Cleaning staff"
-    ],
-
-    "Staff Room": [
-        "Manager",
-        "Cleaning staff",
-        "Other"
-    ],
-
-    "Archives Room": [
-        "Manager"
-    ]
-};
 
 document.getElementById('add_workers_Archives_room').addEventListener('click', function () {
-    document.getElementById('model-filter-staff').classList.toggle('d-none')
+    document.getElementById('model-filter-staff').classList.remove('d-none')
+    document.getElementById('model-filter-staff').setAttribute('data-room', 'Archives_room')
     let workers = JSON.parse(localStorage.getItem("staff_table"))
-    let archives_room = workers.filter(worker => worker.role === "Manager")
+    let archives_room = workers.filter(worker => worker.role === "Manager" && worker.etat === 'NotYet')
     document.getElementById('model-filter-staff').innerHTML = archives_room.map(worker => affiche_worker_filter(worker))
 })
 
 document.getElementById('add_workers_Conference_room').addEventListener('click', function () {
-    document.getElementById('model-filter-staff').classList.toggle('d-none')
+    document.getElementById('model-filter-staff').classList.remove('d-none')
+    document.getElementById('model-filter-staff').setAttribute('data-room', 'Conference_room')
     let workers = JSON.parse(localStorage.getItem("staff_table"))
-    let conference_rom = workers.filter(worker => worker.role === "Manager" || worker.role === "Other" || worker.role === "Cleaning staff")
+    let conference_rom = workers.filter(worker => worker.etat === 'NotYet')
     document.getElementById('model-filter-staff').innerHTML = conference_rom.map(worker => affiche_worker_filter(worker))
+})
+
+document.getElementById('add_workers_Reception_room').addEventListener('click', function () {
+    document.getElementById('model-filter-staff').classList.remove('d-none')
+    document.getElementById('model-filter-staff').setAttribute('data-room', 'Reception_room')
+    let workers = JSON.parse(localStorage.getItem("staff_table"))
+    let archives_room = workers.filter(worker => worker.etat === 'NotYet' && (worker.role === "Manager" || worker.role === "Receptionist"))
+    document.getElementById('model-filter-staff').innerHTML = archives_room.map(worker => affiche_worker_filter(worker))
+})
+document.getElementById('add_workers_Server_room').addEventListener('click', function () {
+    document.getElementById('model-filter-staff').classList.remove('d-none')
+    document.getElementById('model-filter-staff').setAttribute('data-room', 'Server_room')
+    let workers = JSON.parse(localStorage.getItem("staff_table"))
+    let archives_room = workers.filter(worker => worker.etat === 'NotYet' && (worker.role === "Manager" || worker.role === "IT Technician" || worker.role === "Cleaning staff"))
+    document.getElementById('model-filter-staff').innerHTML = archives_room.map(worker => affiche_worker_filter(worker))
+})
+
+document.getElementById('add_workers_Security_room').addEventListener('click', function () {
+    document.getElementById('model-filter-staff').classList.remove('d-none')
+    document.getElementById('model-filter-staff').setAttribute('data-room', 'Security_room')
+    let workers = JSON.parse(localStorage.getItem("staff_table"))
+    let archives_room = workers.filter(worker => worker.etat === 'NotYet' && (worker.role === "Manager" || worker.role === "Security Officer" || worker.role === "Cleaning staff"))
+    document.getElementById('model-filter-staff').innerHTML = archives_room.map(worker => affiche_worker_filter(worker))
+})
+
+document.getElementById('add_workers_Staff_room').addEventListener('click', function () {
+    document.getElementById('model-filter-staff').classList.remove('d-none')
+    document.getElementById('model-filter-staff').setAttribute('data-room', 'Staff_room')
+    let workers = JSON.parse(localStorage.getItem("staff_table"))
+    let archives_room = workers.filter(worker => worker.etat === 'NotYet')
+    document.getElementById('model-filter-staff').innerHTML = archives_room.map(worker => affiche_worker_filter(worker))
+})
+
+document.getElementById('model-filter-staff').addEventListener('click', (e) => {
+    try {
+        let elementClick = e.target
+
+        let staff_table = JSON.parse(localStorage.getItem("staff_table")) || []
+        if (confirm(' Do you want to assign this worker to ' + document.getElementById('model-filter-staff').getAttribute('data-room'))) {
+
+            staff_table = staff_table.map(worker => {
+                if (worker.id === Number(elementClick.closest('div.worker').getAttribute("id"))) {
+                    return { ...worker, etat: document.getElementById('model-filter-staff').getAttribute('data-room') };
+                }
+                return worker;
+            })
+            localStorage.setItem('staff_table', JSON.stringify(staff_table))
+
+            alert('Worker successfully assigned to ' + document.getElementById('model-filter-staff').getAttribute('data-room'));
+            // document.getElementById('model-filter-staff').classList.add('d-none');
+            // show_Unassigned_Staff_list()
+        }
+
+    } catch {
+        alert('il y a  un erreur')
+    }
 })
 
 
 
-function affiche_worker_filter(vorker) {
-    return ` <div class="d-flex justify-content-center align-items-center m-1 border-bottom p-2">
+
+
+function affiche_worker_filter(worker) {
+    return ` <div class="d-flex justify-content-center align-items-center m-1 border-bottom p-2 worker" id="${worker.id}">
             <div class=" ">
-                <img id="photo-preview" width="50" class="rounded-5" src="${vorker.photourl}"
+                <img id="photo-preview" width="50" class="rounded-5" src="${worker.photourl}"
                     alt="preview" />
             </div>
             <div class="flex-grow-1">
                 <div class=" p-1 fs-12  d-flex flex-column ">
-                    <label>${vorker.fullname} </label>
-                    <label class="">${vorker.role} </label>
+                    <label>${worker.fullname} </label>
+                    <label class="">${worker.role} </label>
                 </div>
 
             </div>
