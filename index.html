@@ -7,18 +7,17 @@
     <title>Structure Personnel et Chambres</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="d-lg-flex  vh-100 p-0 m-0">
 
     <aside class="col-lg-3 col-12  staff-area p-3 border-end">
-        <h4 class="mb-4 text-primary">Unassigned Staff</h4>
+        <h4 class="mb-4 text-">Unassigned Staff</h4>
         <button class="btn bg-success text-white m-2" id="btn-add-staff"> +Add New Worker</button>
 
         <div id="Unassigned-Staff-list" class="scroll-y  h-75">
-
         </div>
 
 
@@ -28,88 +27,144 @@
         <h4 class="mb-4 text-primary">Workspace</h4>
 
         <div class="grid ">
-            <div id="SalleDesServeurs" class=" border  text-white">SalleDesServeurs</div>
-            <div id="Manager" class="border text-white">Manager</div>
-            <div id="SalleDesEcurite" class="border  text-white">SalleDesEcurite</div>
-            <div id="Reception" class="border  text-white">Reception</div>
-            <div id="Nettoyage" class="border  text-white">Nettoyage</div>
-            <div id="AutresRoles" class="border  text-white">AutresRoles</div>
+            <div id="ConferenceRoom" class=" border  text-white">
+                <div class="d-flex justify-content-between"> <span>Conference Room</span> 0/10
+                    <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
+                        <i id="add_workers_Conference_room" class="bi bi-person-fill-add"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="Reception" class="border text-white">
+                <div class="d-flex justify-content-between"> <span>Reception </span> 0/10
+                    <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
+                        <i id="add_workers_Reception_room" class="bi bi-person-fill-add"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="ServerRoom" class="border  text-white">
+                <div class="d-flex justify-content-between"> <span>Server Room</span> 0/10
+                    <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
+                        <i id="add_workers_Server_room" class="bi bi-person-fill-add"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="SecurityRoom" class="border  text-white">
+                <div class="d-flex justify-content-between"> <span>Security Room</span> 0/10
+                    <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
+                        <i id="add_workers_Security_rom" class="bi bi-person-fill-add"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="StaffRoom" class="border  text-white">
+                <div class="d-flex justify-content-between"> <span>Staff Room</span> 0/10
+                    <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
+                        <i id="add_workers_Staff_room" class="bi bi-person-fill-add"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="ArchivesRoom" class="border  text-white">
+                <div class="d-flex justify-content-between"> <span>Archives Room</span> 0/10
+                    <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
+                        <i id="add_workers_Archives_room" role="button" class="bi bi-person-fill-add"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="model-add-staff"
-        class=" p-1  bg-opacity-75 bg-dark  vw-100 vh-100 position-absolute top-0  d-none  d-flex flex-column justify-content-center align-items-center">
 
-        <div class="bg-light rounded-4 p-4 w-50 ">
-            <div class=" d-flex  justify-content-between ">
-                <h5 class="" id="addEmployeeModalLabel">Add New Worker</h5>
-                <button type="button" id="close-modal-add" class="btn-close btn-close-black"></button>
-            </div>
-
-            <div class=" p-2">
-                <form id="employeeForm" class=" ">
-
-                    <div class="row p-2 justify-content-between">
-                        <div class=" col-5  d-flex flex-column ">
+    <!-- model add staff -->
+    <div id="model-add-staff" class="bg-light rounded-4 d-none position-absolute mt-2 p-2 w-25   ">
+        <div class=" d-flex  justify-content-between p-1border-bottom  ">
+            <button type="button" id="btn" class="  bg-success text-white  border rounded fs-12 fw-bold p-1"> +Add New
+                Worker</button>
+            <button type="button" id="close-modal-add" class="btn-close   btn-danger"></button>
+        </div>
+        <div class=" p-2">
+            <form id="employeeForm" class=" ">
+                <div class="d-flex justify-content-center align-items-center border-bottom">
+                    <div>
+                        <img id="photo-preview" width="80" class="rounded-5 border-danger"
+                            src="https://i.pravatar.cc/92?img=2" alt="preview" />
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class=" p-1 fs-12  d-flex flex-column ">
                             <label>Full Name</label>
                             <input type="text" class=" border p-1 rounded" name="name" required>
                         </div>
-
-                        <div class="col-5  d-flex flex-column ">
+                        <div class=" p-1 fs-12 d-flex flex-column ">
                             <label>Role</label>
                             <select name="role" class="border p-1 rounded" required>
-                                <option value="" disabled selected>selct role</option>
-                                <option value="Réceptionniste">Réceptionniste</option>
-                                <option value="Technicien IT">Technicien IT</option>
-                                <option value="Agent de sécurité">Agent de sécurité</option>
+                                <option value="" disabled selected>Select role</option>
                                 <option value="Manager">Manager</option>
-                                <option value="Nettoyage">Nettoyage</option>
-                                <option value="Développeur">Développeur</option>
-                                <option value="Comptable">Comptable</option>
-                                <option value="RH">RH</option>
+                                <option value="Receptionist">Receptionist</option>
+                                <option value="IT Technician">IT Technician</option>
+                                <option value="Security Officer">Security Officer</option>
+                                <option value="Cleaning Staff">Cleaning Staff</option>
+                                <option value="Other">Other</option>
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class=" fs-12 p-2 d-flex flex-column  p-2">
+                    <label>Phone</label>
+                    <input class="  border p-1 rounded" name="phone" required>
+                </div>
+                <div class="fs-12 p-2 d-flex flex-column">
+                    <label>Email</label>
+                    <input name="email" class="border p-1 rounded" required>
+                </div>
+                <div class="fs-12 p-2 border-bottom">
+                    <label class="d-block">Photo (URL)</label>
 
-                    <div class="row justify-content-between align-items-center p-2">
-                        <div class="col-5 d-flex flex-column  p-2">
-                            <label>Phone</label>
-                            <input class=" border p-1 rounded" name="phone" required>
+                    <input type="url" id="input-photo-preview" name="photo" class="border p-1 rounded w-75"
+                        placeholder="https://example.com/photo.jpg">
+                </div>
+                <div class="d-flex justify-content-between fs-12 p-1 border-bottom ">
+                    <span>Experiences professionnelles</span>
+                    <button type="button" id="add-exp" class="border p-1 rounded">+ add experience</button>
+                </div>
+                <div id="experiences-container" class="scroll-y  ">
+
+
+                    <div class="experience p-1">
+                        <div class="d-flex justify-content-between p-1">
+                            <span class="badge bg-success p-2">
+                                Experience 1
+                            </span>
+                            <button type="button" class=" bg-opacity-0 bg-light border-0 text-danger ">
+                                <i class="bi bi-file-earmark-x">
+                                </i>
+                            </button>
                         </div>
-
-
-                        <div class="col-5 d-flex flex-column">
-                            <label>Email</label>
-                            <input name="email" class="border p-1 rounded" required>
-                        </div>
-                    </div>
-                    <div class="row justify-content-between align-items-center p-2">
-                        <div class=" col-5 flex-column">
-                            <label>Photo (URL)</label>
-
-                            <div class="d-flex ">
-                                <img id="photo-preview" width="40" class="rounded-5 border-danger" src=""
-                                    alt="preview" />
-                                <input type="url" id="input-photo-preview" name="photo" class="border p-1 rounded"
-                                    placeholder="https://example.com/photo.jpg">
+                        <div class=" d-flex flex-column  fs-12 gap-1 ">
+                            <label for="poste">Poste</label>
+                            <input type="text" placeholder="Poste" class=" border p-1 rounded " name="postes" required>
+                            <label for="entreprise"> Entreprise</label>
+                            <input type="text" placeholder="Entreprise" class="border p-1 rounded " name="entreprises"
+                                required>
+                            <div class="d-flex justify-content-between gap-1">
+                                <span class="flex-grow-1">date start</span> <span class="flex-grow-1"> date end</span>
+                            </div>
+                            <div class="d-flex justify-content-between gap-1">
+                                <input type="date" placeholder="Années (ex: 2019-2022)"
+                                    class="flex-grow-1 border p-1 rounded  " name="annees" required>
+                                <input type="date" placeholder="Années (ex: 2019-2022)"
+                                    class="flex-grow-1 border rounded" name="annees" required>
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between p-1">
-                        <span>Experiences professionnelles</span>
-                        <button type="button" id="add-exp" class="border p-1 rounded">+ add experience</button>
-                    </div>
-                    <div id="experiences-container" class="scroll-y  ">
-                    </div>
-                    <div class="d-flex justify-content-end ">
-                        <button type="button" id="btn" class="btn bg-success text-white m-2">Save</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+
+            </form>
         </div>
     </div>
     <!-- model affich info staff -->
 
+    <div id="model-filter-staff" class="bg-light rounded-4 d-none position-absolute mt-2 p-2 w-25 h-100   ">
+
+
+    </div>
 
     <script src="js/script.js"></script>
 </body>

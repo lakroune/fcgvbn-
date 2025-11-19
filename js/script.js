@@ -12,23 +12,44 @@ document.getElementById("input-photo-preview").addEventListener('keyup', functio
 })
 
 document.getElementById("add-exp").addEventListener('click', function () {
+    let countExp = 2
     let experienceform = document.createElement('div')
-    experienceform.className = 'd-flex justify-content-between align-items-center  experience'
+    experienceform.className = 'experience p-1'
     experienceform.innerHTML = `
-                            <button type="button" class=" bg-opacity-0 bg-light border-0 text-danger ">X</button>
-                            <div class="p-1">
-                                <input type="text" placeholder="Poste" class="border rounded p-1" name="postes" required>
-                                <input type="text" placeholder="Entreprise" class="border rounded p-1" name="entreprises" required>
-                                <input type="text" placeholder="Années (ex: 2019-2022)" class="border rounded p-1" name="annees" required>
-                            </div> 
+                             <div class="d-flex justify-content-between p-1">
+                            <span class="badge bg-success p-2">
+                                Experience ${countExp}
+                            </span>
+                            <button type="button" class=" bg-opacity-0 bg-light border-0 text-danger ">
+                                <i class="bi bi-file-earmark-x">
+                                </i>
+                            </button>
+                        </div>
+                        <div class=" d-flex flex-column  fs-12 gap-1 ">
+                            <label for="poste">Poste</label>
+                            <input type="text" placeholder="Poste" class=" border p-1 rounded " name="postes" required>
+                            <label for="entreprise"> Entreprise</label>
+                            <input type="text" placeholder="Entreprise" class="border p-1 rounded " name="entreprises"
+                                required>
+                            <div class="d-flex justify-content-between gap-1">
+                                <span class="flex-grow-1">date start</span> <span class="flex-grow-1"> date end</span>
+                            </div>
+                            <div class="d-flex justify-content-between gap-1">
+                                <input type="date" placeholder="Années (ex: 2019-2022)"
+                                    class="flex-grow-1 border p-1 rounded  " name="annees" required>
+                                <input type="date" placeholder="Années (ex: 2019-2022)"
+                                    class="flex-grow-1 border rounded" name="annees" required>
+                            </div>
+                        </div>
     `
+
     document.getElementById('experiences-container').appendChild(experienceform)
 })
 
 document.getElementById('experiences-container').addEventListener('click', (e) => {
     let elementClick = e.target
-    if (elementClick.tagName === "BUTTON") {
-        elementClick.closest('div').remove()
+    if (elementClick.tagName === "I") {
+        elementClick.closest('div.experience').remove()
     }
 })
 
@@ -91,9 +112,9 @@ function show_Unassigned_Staff_list() {
         staff_card.setAttribute('id', index++)
         staff_card.innerHTML = ` <div class="card-body d-flex  align-items-center" >
                                     <img src=" ${staff.photourl} " width="44" class="rounded-circle" alt="Photo">
-                                    <div class="m-1 mt-0 mb-0">
-                                        <h6 class="card-title mb-0"> ${staff.fullname}</h6>
-                                        <p class="card-text text-muted small"> ${staff.role}</p>
+                                    <div class="    ">
+                                        <span class="card-title   fs-12"> ${staff.fullname}</span>
+                                        <span class="card-text text-muted   fs-12"> ${staff.role}</span>
                                     </div>
                                  </div> `
         document.getElementById("Unassigned-Staff-list").appendChild(staff_card)
@@ -172,4 +193,74 @@ function showExp(experiences) {
                         <span class="badge bg-secondary mt-1">${experience.annee}</span>
                     </div>`
     });
+}
+
+
+
+const access_room = {
+    "Conference Room": [
+        
+        "all"
+    ],
+
+    "Reception": [
+        "Manager",
+        "Receptionist",
+        "Cleaning staff",
+        "Other"
+    ],
+
+    "Server Room": [
+        "Manager",
+        "IT Technician",
+        "Cleaning staff"
+    ],
+
+    "Security Room": [
+        "Manager",
+        "Security Officer",
+        "Cleaning staff"
+    ],
+
+    "Staff Room": [
+        "Manager",
+        "Cleaning staff",
+        "Other"
+    ],
+
+    "Archives Room": [
+        "Manager"
+    ]
+};
+
+document.getElementById('add_workers_Archives_room').addEventListener('click', function () {
+    document.getElementById('model-filter-staff').classList.toggle('d-none')
+    let workers = JSON.parse(localStorage.getItem("staff_table"))
+    let archives_room = workers.filter(worker => worker.role === "Manager")
+    document.getElementById('model-filter-staff').innerHTML = archives_room.map(worker => affiche_worker_filter(worker))
+})
+
+document.getElementById('add_workers_Conference_room').addEventListener('click', function () {
+    document.getElementById('model-filter-staff').classList.toggle('d-none')
+    let workers = JSON.parse(localStorage.getItem("staff_table"))
+    let conference_rom = workers.filter(worker => worker.role === "Manager" || worker.role === "Other" || worker.role === "Cleaning staff")
+    document.getElementById('model-filter-staff').innerHTML = conference_rom.map(worker => affiche_worker_filter(worker))
+})
+
+
+
+function affiche_worker_filter(vorker) {
+    return ` <div class="d-flex justify-content-center align-items-center m-1 border-bottom p-2">
+            <div class=" ">
+                <img id="photo-preview" width="50" class="rounded-5" src="${vorker.photourl}"
+                    alt="preview" />
+            </div>
+            <div class="flex-grow-1">
+                <div class=" p-1 fs-12  d-flex flex-column ">
+                    <label>${vorker.fullname} </label>
+                    <label class="">${vorker.role} </label>
+                </div>
+
+            </div>
+        </div>`
 }
