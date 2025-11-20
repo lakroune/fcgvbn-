@@ -18,6 +18,9 @@
  .fs-12{
     font-size: 12px;
  }
+  .fs-10{
+    font-size: 10px;
+ }
 
 .object-fit-contain {
     object-fit: contain;

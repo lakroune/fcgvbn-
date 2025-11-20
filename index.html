@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Structure Personnel et Chambres</title>
+    <title>Workspace</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -14,8 +14,9 @@
 <body class="d-lg-flex  vh-100 p-0 m-0">
 
     <aside class="col-lg-3 col-12  staff-area p-3 border-end">
-        <h4 class="mb-4 text-">Unassigned Staff</h4>
-        <button class="btn bg-success text-white m-2" id="btn-add-staff"> +Add New Worker</button>
+        <h4 class=" text-center">Unassigned Staff</h4>
+        <button class="  w-100 border rounded     " id="btn-add-staff"> <i class="bi bi-person-fill-add"></i> Add New
+            Worker</button>
 
         <div id="Unassigned-Staff-list" class="scroll-y  h-75">
         </div>
@@ -24,53 +25,90 @@
     </aside>
 
     <div class="col-lg-9 col-12 p-1">
-        <h4 class="mb-4 text-primary">Workspace</h4>
-
+        <h4 class="mb-4 ">Workspace</h4>
         <div class="grid ">
+
+
+
             <div id="ConferenceRoom" class=" border  text-white">
-                <div class="d-flex justify-content-between"> <span>Conference Room</span> 0/10
+                <div class="d-flex justify-content-between p-1 "> <span class="fs-12">Conference Room</span>
+                    <p class="fs-12"><span class="count">0</span> <span>/ 10</span></p>
                     <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
                         <i id="add_workers_Conference_room" class="bi bi-person-fill-add"></i>
                     </div>
                 </div>
+                <div class="cards-continer row m-0 gap-3 justify-content-center align-items-end">
+
+                </div>
             </div>
-            <div id="Reception" class="border text-white">
-                <div class="d-flex justify-content-between">
-                    <span>Reception </span> 0/10
+
+
+
+            <div id="Reception" class="border text-white bg-opacity-50 ">
+                <div class="d-flex justify-content-between p-1">
+                    <span class="fs-12 fw-bold">Reception </span>
+                    <p class="fs-12"><span class="count ">0</span> <span>/ 10</span></p>
                     <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
                         <i id="add_workers_Reception_room" class="bi bi-person-fill-add"></i>
                     </div>
                 </div>
-                <div class="cards-continer row m-0 gap-1 justify-content-center align-items-end">
+                <div class="cards-continer row m-0 gap-3 justify-content-center align-items-end">
 
                 </div>
             </div>
-            <div id="ServerRoom" class="border  text-white">
-                <div class="d-flex justify-content-between"> <span>Server Room</span> 0/10
+
+
+
+            <div id="ServerRoom" class="border  text-white bg-danger bg-opacity-50 ">
+                <div class="d-flex justify-content-between p-1"> <span class="fs-12 fw-bold">Server Room</span>
+                    <p class="fs-12"><span class="count">0</span> <span>/ 10</span></p>
                     <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
                         <i id="add_workers_Server_room" class="bi bi-person-fill-add"></i>
                     </div>
                 </div>
+                <div class="cards-continer row m-0 gap-3 justify-content-center align-items-end">
+
+                </div>
             </div>
-            <div id="SecurityRoom" class="border  text-white">
-                <div class="d-flex justify-content-between"> <span>Security Room</span> 0/10
+
+
+
+            <div id="SecurityRoom" class="border  text-white bg-danger bg-opacity-50 ">
+                <div class="d-flex justify-content-between p-1"> <span class="fs-12 fw-bold">Security Room</span>
+                    <p class="fs-12"><span class="count">0</span> <span>/ 10</span></p>
                     <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
                         <i id="add_workers_Security_room" class="bi bi-person-fill-add"></i>
                     </div>
                 </div>
+                <div class="cards-continer row m-0 gap-3 justify-content-center align-items-end">
+
+                </div>
             </div>
-            <div id="StaffRoom" class="border  text-white">
-                <div class="d-flex justify-content-between"> <span>Staff Room</span> 0/10
+
+
+            <div id="StaffRoom" class="border   text-white   ">
+                <div class="d-flex justify-content-between p-1"> <span class="fs-12 fw-bold">Staff Room</span>
+                    <p class="fs-12"><span class="count">0</span> <span>/ 10</span></p>
                     <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
                         <i id="add_workers_Staff_room" class="bi bi-person-fill-add"></i>
                     </div>
                 </div>
+                <div class="cards-continer row m-0 gap-3 justify-content-center align-items-end">
+
+                </div>
             </div>
-            <div id="ArchivesRoom" class="border  text-white">
-                <div class="d-flex justify-content-between"> <span>Archives Room</span> 0/10
+
+
+
+            <div id="ArchivesRoom" class="border  text-white bg-danger bg-opacity-50 ">
+                <div class="d-flex justify-content-between p-1"> <span class="fs-12 fw-bold">Archives Room</span>
+                    <p class="fs-12"><span class="count">0</span> <span>/ 10</span></p>
                     <div class="bg-success justify-content-center align-items-center rounded d-inline p-1">
                         <i id="add_workers_Archives_room" role="button" class="bi bi-person-fill-add"></i>
                     </div>
+                </div>
+                <div class="cards-continer row m-0 gap-3 justify-content-center align-items-end">
+
                 </div>
             </div>
         </div>
@@ -131,7 +169,7 @@
                 <div id="experiences-container" class="scroll-y  ">
 
 
-                    <div class="experience p-1">
+                    <div class="experience p-1  ">
                         <div class="d-flex justify-content-between p-1">
                             <span class="badge bg-success p-2">
                                 Experience 1
@@ -165,7 +203,7 @@
     </div>
     <!-- model affich info staff -->
 
-    <div id="model-filter-staff" class="bg-light rounded-4 d-none position-absolute mt-2 p-2 w-25 h-100   ">
+    <div id="model-filter-staff" class="bg-white rounded-4 d-none position-absolute mt-2 p-2 w-25 h-100    ">
 
     </div>
 
